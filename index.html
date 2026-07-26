@@ -4,32 +4,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Goobers</title>
+
+<!-- ONE FONT ONLY!! titles, subtitles, body text, buttons — ALL Bricolage Grotesque.
+     no font drama, just different weights doin the work. see .display / .eyebrow below -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@6..144,200..800&display=swap" rel="stylesheet">
+
 <style>
+  /* ===== COLOR SQUAD =====
+     --s1 thru --s4 = shades of baby pink, light to THICC dark, one per
+     chart category (Playing Time, Team Spirit, Competition, Making
+     Mistakes). change a color here?? gotta go update its hex twin down
+     in the JS data too — they are NOT telepathically linked, sadly */
   :root{
-    --paper:#FFF6FA;
-    --ink:#3A1626;
-    --muted:#8A5A6E;
-    --accent:#D6487C;
-    --s1:#FCE1EC;
-    --s2:#F7B9D4;
-    --s3:#EF8FB9;
-    --s4:#D6588F;
-    --deep:#B23E6F;
-    --pad:clamp(20px, 5vw, 64px);
+    --paper:#FFF6FA;   /* lightest bg (slide 2) */
+    --ink:#3A1626;     /* main text */
+    --muted:#8A5A6E;   /* quieter text */
+    --accent:#D6487C;  /* active stuff, subtitle, "in" highlight */
+
+    --s1:#FCE1EC; /* Playing Time */
+    --s2:#F7B9D4; /* Team Spirit */
+    --s3:#EF8FB9; /* Competition */
+    --s4:#D6588F; /* Making Mistakes */
+    --deep:#B23E6F; /* slide 3 bg */
+
+    --pad:clamp(20px, 5vw, 64px); /* shared slide padding, stretches w/ the screen */
   }
+
+  /* ---------- the basics, don't overthink it ---------- */
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
   body{
-    font-family:'Bricolage Grotesque', sans-serif; color:var(--ink);
-    height:100vh; height:100dvh; overflow:hidden;
+    font-family:'Bricolage Grotesque', sans-serif;
+    color:var(--ink);
+    height:100vh; height:100dvh; /* dvh so mobile browser bars don't eat our stuff */
+    overflow:hidden; /* .deck handles ALL the scrolling, this guy just chills */
   }
-  .mono{font-family:'Bricolage Grotesque', sans-serif; letter-spacing:0.02em;}
-  .display{font-family:'Bricolage Grotesque', sans-serif; font-weight:800;}
 
-  /* ---------- slidesssss boi ---------- */
+  /* one font, two vibes — weight/spacing does all the talking here */
+  .eyebrow{font-weight:600; letter-spacing:0.02em;} /* tiny shouty-caps text: tags, chips, footer */
+  .display{font-weight:800;} /* BIG headline energy */
+
+  /* =========================================================
+     ---------- slidesssss boi ----------
+     each .slide = one full-screen vibe. scroll-snap makes
+     scrolling/swiping feel like flipping through an actual
+     slideshow — no JS needed for the basic snap, the script
+     down below just bolts on the dots/arrows/keyboard stuff
+     ========================================================= */
   .deck{
     height:100vh; height:100dvh;
     overflow-y:scroll;
@@ -43,9 +66,9 @@
     scroll-snap-stop:always;
     display:flex; flex-direction:column;
     padding:var(--pad);
-    padding-bottom:calc(var(--pad) + 76px);
+    padding-bottom:calc(var(--pad) + 76px); /* leaves room so the footer/nav bar doesn't eat the text */
     position:relative;
-    overflow-y:auto;
+    overflow-y:auto; /* just in case stuff ever doesn't fit — scroll it, don't yeet it off screen */
   }
 
   /* slideee to the left (1) */
@@ -59,7 +82,7 @@
     line-height:0.95; letter-spacing:-0.02em; text-transform:uppercase;
   }
   .subtitle{
-    font-family:'Bricolage Grotesque', sans-serif; font-weight:700;
+    font-weight:700;
     font-size:clamp(16px, 2.4vw, 24px); text-transform:uppercase; letter-spacing:0.01em;
     color:var(--accent); max-width:24ch;
   }
@@ -85,12 +108,17 @@
   .chart-wrap{flex:1; display:flex; align-items:center; justify-content:center; gap:clamp(20px,4vw,40px); flex-wrap:wrap; min-height:0;}
   .donut-stage{position:relative; width:min(360px, 62vh, 74vw); height:min(360px, 62vh, 74vw); flex-shrink:0;}
   svg.donut{width:100%; height:100%; overflow:visible;}
+
+  /* each wedge = one clickable/focusable svg path, spawned by the JS down below */
   .slice{cursor:pointer; transition:transform 380ms cubic-bezier(.2,.9,.25,1), opacity 300ms ease; transform-box:fill-box; transform-origin:center;}
   .slice:focus-visible{outline:3px solid var(--ink); outline-offset:4px;}
-  .slice.dimmed{opacity:0.2;}
-  .center-tag{font-family:'Bricolage Grotesque', sans-serif; font-weight:700; fill:var(--ink); text-anchor:middle; dominant-baseline:middle; pointer-events:none; font-size:30px; letter-spacing:0.01em;}
-  .center-sub{font-family:'Bricolage Grotesque', sans-serif; font-weight:600; fill:var(--muted); text-anchor:middle; pointer-events:none; font-size:15px; letter-spacing:0.06em;}
+  .slice.dimmed{opacity:0.2;} /* everybody dims except whoever just got picked */
 
+  /* the little words chillin in the donut hole */
+  .center-tag{font-weight:700; fill:var(--ink); text-anchor:middle; dominant-baseline:middle; pointer-events:none; font-size:30px; letter-spacing:0.01em;}
+  .center-sub{font-weight:600; fill:var(--muted); text-anchor:middle; pointer-events:none; font-size:15px; letter-spacing:0.06em;}
+
+  /* desktop gets tiny spoke badges floating around the ring (JS points them, see positionBadges) */
   .badge-layer{position:absolute; inset:0; pointer-events:none;}
   .badge{
     position:absolute; width:24px; height:24px; border-radius:50%;
@@ -100,15 +128,17 @@
   .badge.active{transform:translate(-50%,-50%) scale(1.35); box-shadow:0 0 0 3px #FFFBFD, 0 0 0 5px var(--ink);}
   .badge:focus-visible{outline:3px solid var(--accent); outline-offset:3px;}
 
+  /* phones get a scrolly chip row instead — badges are too extra for a small screen */
   .chip-row{display:none; gap:10px; overflow-x:auto; padding:2px 2px 6px; width:100%;}
   .chip{
     flex:0 0 auto; border:1.5px solid var(--muted); border-radius:999px; padding:10px 16px;
-    font-family:'Bricolage Grotesque', sans-serif; font-size:11px; font-weight:600;
+    font-size:11px; font-weight:600;
     background:#fff; cursor:pointer; white-space:nowrap; text-transform:uppercase;
-    min-height:44px; display:flex; align-items:center;
+    min-height:44px; display:flex; align-items:center; /* 44px bc thumbs need room to breathe */
   }
   .chip.active{background:var(--accent); border-color:var(--accent); color:#fff;}
 
+  /* the lil card that pops up once you actually pick a slice */
   .panel{
     background:#fff; border-radius:20px; padding:20px 22px;
     box-shadow:0 8px 24px rgba(58,22,38,0.08);
@@ -118,10 +148,10 @@
   .dot{width:16px; height:16px; border-radius:50%; border:2px solid var(--ink); display:inline-block;}
   .panel .label{font-weight:700; text-transform:uppercase; letter-spacing:0.01em; font-size:clamp(16px,2vw,20px);}
   .rule-grid{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px;}
-  .rule{font-family:'Bricolage Grotesque', sans-serif; font-size:12px; padding:8px 12px; border-radius:10px; text-transform:uppercase;}
+  .rule{font-size:12px; padding:8px 12px; border-radius:10px; text-transform:uppercase;}
   .rule .rtag{display:block; font-size:9px; letter-spacing:0.1em; margin-bottom:3px; opacity:0.7;}
-  .rule.in{background:var(--s2); color:var(--ink);}
-  .rule.out{background:#F7F1F3; color:var(--muted); text-decoration:line-through;}
+  .rule.in{background:var(--s2); color:var(--ink);}   /* the stuff we're here for */
+  .rule.out{background:#F7F1F3; color:var(--muted); text-decoration:line-through;} /* the stuff we are NOT about */
   .panel .caption{font-size:clamp(14px,1.6vw,16px); line-height:1.5; font-style:italic; color:var(--ink);}
   .panel .hint{color:var(--muted); font-style:italic; font-size:14px;}
 
@@ -134,16 +164,17 @@
   #slide-3 h2{font-size:clamp(30px,6vw,64px); line-height:1.02; text-transform:uppercase; letter-spacing:-0.01em; max-width:16ch;}
   .recap{display:flex; gap:10px; flex-wrap:wrap;}
   .recap span{
-    font-family:'Bricolage Grotesque', sans-serif; font-size:12px; font-weight:600; text-transform:uppercase;
+    font-size:12px; font-weight:600; text-transform:uppercase;
     border:1.5px solid rgba(255,255,255,0.5); border-radius:999px; padding:9px 14px;
   }
   #slide-3 .sub{color:#F7D8E6; max-width:52ch; margin:0;}
 
-  /* ---------- WE ALOMOST DONE ---------- */
+  /* ---------- WE ALOMOST DONE ----------
+     this stuff floats on top of EVERY slide, all the time */
   .master-footer{
     position:fixed; left:0; right:0; bottom:14px; z-index:20;
     display:flex; justify-content:space-between; align-items:center;
-    padding:0 18px; pointer-events:none; font-family:'Bricolage Grotesque', sans-serif; font-size:10px;
+    padding:0 18px; pointer-events:none; font-size:10px;
   }
   .master-footer span{
     background:#FFFFFF;
@@ -156,10 +187,10 @@
     display:flex; align-items:center; gap:10px;
     background:#FFFFFF;
     border-radius:999px; padding:8px; box-shadow:0 6px 20px rgba(58,22,38,0.15);
-    padding-bottom:calc(8px + env(safe-area-inset-bottom));
+    padding-bottom:calc(8px + env(safe-area-inset-bottom)); /* dodges the iPhone home bar */
   }
   .nav-btn{
-    width:44px; height:44px; border-radius:50%; border:none; background:transparent;
+    width:44px; height:44px; border-radius:50%; border:none; background:transparent; /* thumb-sized buttons, self care */
     display:flex; align-items:center; justify-content:center; cursor:pointer;
     font-size:16px; color:var(--ink); transition:background 150ms ease;
   }
@@ -169,6 +200,11 @@
   .nav-dot::after{content:''; width:8px; height:8px; border-radius:50%; background:var(--muted); transition:all 200ms ease;}
   .nav-dot.active::after{background:var(--accent); width:20px; border-radius:5px;}
 
+  /* =========================================================
+     responsive?? in THIS economy?? yes bestie
+     ========================================================= */
+
+  /* phones + skinny tablets: badges become a chip row, desktop footer bounces */
   @media (max-width:760px){
     .badge-layer{display:none;}
     .chip-row{display:flex;}
@@ -176,9 +212,12 @@
     .master-footer{display:none;}
     .slide{padding-bottom:calc(var(--pad) + 68px);}
   }
+
+  /* big tablets + desktop: let the chart get chonkier than the phone cap */
   @media (min-width:1024px){
     .donut-stage{width:min(420px, 58vh, 34vw); height:min(420px, 58vh, 34vw);}
   }
+
   /* LANDSCAPER VIBES */
   @media (max-height:520px){
     .slide{padding-top:calc(var(--pad) * 0.6); padding-bottom:calc(var(--pad) * 0.6 + 58px);}
@@ -190,13 +229,16 @@
     #slide-2 h2, #slide-3 h2{font-size:clamp(18px, 4.2vw, 30px);}
     .chart-wrap{gap:14px;}
     .panel{padding:12px 16px;}
-    .slide-nav{padding:6px;}
+    .slide-nav{padding:6px; bottom:8px;}
     .nav-btn{width:38px; height:38px; font-size:14px;}
     .master-footer{bottom:8px;}
-    .slide-nav{bottom:8px;}
   }
+
+  /* nobody wants motion sickness, chill mode for whoever asked for it */
   @media (prefers-reduced-motion:reduce){
-    .slice{transition:none;} .scroll-cue .chev{animation:none;} html{scroll-behavior:auto;}
+    .slice{transition:none;}
+    .scroll-cue .chev{animation:none;}
+    html{scroll-behavior:auto;}
   }
 </style>
 </head>
@@ -204,17 +246,19 @@
 
 <div class="deck" id="deck">
 
+  <!-- slide 1: the cover, obviously -->
   <section class="slide" id="slide-1">
     <h1 class="masthead display">THE GOOBERS</h1>
     <p class="subtitle">COMPETE OUTWARD.<br>NOT WITH EACH OTHER</p>
-    <span class="tag mono">COMPETITIVE DIV.</span>
+    <span class="tag eyebrow">COMPETITIVE DIV.</span>
     <p class="sub">This season we're formalizing The Goobers as a team explicitly committed to fairly distributed playing time, and a non-competitive spirit that prioritizes fun over winning. Scroll to see more of what's in and what's out.</p>
     <div class="scroll-cue"><span>Scroll</span><span class="chev">↓</span></div>
   </section>
 
+  <!-- slide 2: the whole point — one wedge per charter category -->
   <section class="slide" id="slide-2">
     <div>
-      <div class="slide-title mono">GOOBER SPIRIT</div>
+      <div class="slide-title eyebrow">GOOBER SPIRIT</div>
       <h2 class="display">FOUR HOUSE PRINCIPLES</h2>
     </div>
     <div class="chart-wrap">
@@ -233,17 +277,19 @@
     <div class="chip-row" id="chipRow"></div>
   </section>
 
+  <!-- slide 3: manifesto, mic drop, done -->
   <section class="slide" id="slide-3">
-    <span class="tag mono">GOOBER MANIFESTO</span>
+    <span class="tag eyebrow">GOOBER MANIFESTO</span>
     <h2 class="display">FAIR MINUTES. REAL FUN.<br>ROOM TO MESS UP.</h2>
     <p class="sub">The Goobers are a team within the competitive division that are externally competitive, not internally competitive. This means that The Goobers are looking to avoid playing with teammates who prevent them from getting in or won't pass them the ball or shame them for making mistakes. The Goobers as a team are explicitly committed to fairly distributed playing time, and a non-competitive spirit that prioritizes fun over winning.</p>
-    <div class="recap mono">
+    <div class="recap eyebrow">
       <span>Playing Time</span><span>Team Spirit</span><span>Competition</span><span>Making Mistakes</span>
     </div>
   </section>
 
 </div>
 
+<!-- floats on top of all three slides, forever -->
 <div class="master-footer">
   <span>THE GOOBERS</span>
   <span id="slideCount">01 / 03</span>
@@ -256,25 +302,47 @@
 </nav>
 
 <script>
-/* ---------- DATA IN DA CHART ---------- */
+/* ---------- DATA IN DA CHART ----------
+   one entry = one wedge. this is nominal data (categories, not
+   percentages) so every wedge is the SAME size on purpose, no
+   weighting going on here. `hex` is copy-pasted from --s1..--s4
+   up in the CSS, keep 'em matching if the palette ever changes */
 const data = [
-  { label:"PLAYING TIME", short:"TIME", hex:"#FCE1EC", in:"Fair minutes", out:"Time hogs", caption:"Everyone gets a fair share of the clock — nobody's stuck holding the bench." },
-  { label:"TEAM SPIRIT", short:"SPIRIT", hex:"#F7B9D4", in:"Having fun", out:"Win-at-all-cost", caption:"We're here to enjoy the game, not chase a scoreboard at any cost." },
-  { label:"COMPETITION", short:"COMPETE", hex:"#EF8FB9", in:"External", out:"Internal", caption:"The rivalry stays with the other team — never with each other." },
-  { label:"MAKING MISTAKES", short:"SLIPS", hex:"#D6588F", in:"Grace, patience", out:"Icing out", caption:"Mess up, get grace. Nobody sits in the cold for missing a pass." }
+  { label:"PLAYING TIME",    short:"TIME",    hex:"#FCE1EC", in:"Fair minutes",     out:"Time hogs",         caption:"Everyone gets a fair share of the clock — nobody's stuck holding the bench." },
+  { label:"TEAM SPIRIT",     short:"SPIRIT",  hex:"#F7B9D4", in:"Having fun",       out:"Win-at-all-cost",   caption:"We're here to enjoy the game, not chase a scoreboard at any cost." },
+  { label:"COMPETITION",     short:"COMPETE", hex:"#EF8FB9", in:"External",         out:"Internal",          caption:"The rivalry stays with the other team — never with each other." },
+  { label:"MAKING MISTAKES", short:"SLIPS",   hex:"#D6588F", in:"Grace, patience",  out:"Icing out",         caption:"Mess up, get grace. Nobody sits in the cold for missing a pass." }
 ];
 
+/* circle math zone — CX/CY = center, OUTER/INNER = ring radii,
+   GAP = how many degrees of empty space sit between wedges */
 const CX=240, CY=240, OUTER=200, INNER=124, GAP=4;
-function polar(cx,cy,r,angleDeg){ const a=(angleDeg-90)*Math.PI/180; return {x:cx+r*Math.cos(a), y:cy+r*Math.sin(a)}; }
+
+// svg's 0° points to 3 o'clock by default, so we minus 90 to make
+// 0° point straight up like a normal clock would. much better
+function polar(cx,cy,r,angleDeg){
+  const a=(angleDeg-90)*Math.PI/180;
+  return {x:cx+r*Math.cos(a), y:cy+r*Math.sin(a)};
+}
+
+// draws one donut wedge between two angles. math magic, don't
+// poke it unless you know exactly what you're doing lol
 function donutPath(startA,endA){
   const p1=polar(CX,CY,OUTER,startA), p2=polar(CX,CY,OUTER,endA);
   const p3=polar(CX,CY,INNER,endA), p4=polar(CX,CY,INNER,startA);
   const large=(endA-startA)>180?1:0;
   return `M ${p1.x} ${p1.y} A ${OUTER} ${OUTER} 0 ${large} 1 ${p2.x} ${p2.y} L ${p3.x} ${p3.y} A ${INNER} ${INNER} 0 ${large} 0 ${p4.x} ${p4.y} Z`;
 }
+
+// slices up the whole circle evenly between however many categories
+// we've got, plus a lil gap so the wedges don't touch each other
 const usable=360-GAP*data.length, sweep=usable/data.length;
 let cursor=0;
-const slices=data.map((d)=>{ const start=cursor, end=cursor+sweep; cursor=end+GAP; return {...d, start, end, mid:(start+end)/2}; });
+const slices=data.map((d)=>{
+  const start=cursor, end=cursor+sweep;
+  cursor=end+GAP;
+  return {...d, start, end, mid:(start+end)/2};
+});
 
 const slicesGroup=document.getElementById('slicesGroup');
 const badgeLayer=document.getElementById('badgeLayer');
@@ -285,6 +353,10 @@ const centerSub=document.getElementById('centerSub');
 const stage=document.getElementById('stage');
 let activeIndex=null;
 
+/* ---------- buildin the chart ----------
+   for every category we spawn: one svg wedge, one tiny desktop
+   badge, and one mobile chip — all three wired to the same
+   selectSlice(i) so they all agree on what's selected */
 slices.forEach((s,i)=>{
   const path=document.createElementNS('http://www.w3.org/2000/svg','path');
   path.setAttribute('d', donutPath(s.start,s.end));
@@ -304,11 +376,13 @@ slices.forEach((s,i)=>{
   badgeLayer.appendChild(badge);
 
   const chip=document.createElement('button');
-  chip.className='chip mono'; chip.textContent=s.label;
+  chip.className='chip eyebrow'; chip.textContent=s.label;
   chip.addEventListener('click', ()=>selectSlice(i));
   chipRow.appendChild(chip);
 });
 
+// scoots each desktop badge to sit just outside the ring, right
+// at its wedge's middle angle. reruns on resize so it never drifts
 function positionBadges(){
   const rect=stage.getBoundingClientRect();
   const r=rect.width*0.53;
@@ -321,16 +395,26 @@ function positionBadges(){
   });
 }
 
+// click (or hit enter/space) on a wedge = it pops out, everyone
+// else dims down, and the panel + center text spill the tea on
+// that category. click the SAME one again and it all resets
 function selectSlice(i){
   activeIndex = activeIndex===i ? null : i;
+
   slicesGroup.querySelectorAll('.slice').forEach((el,idx)=>{
-    if(activeIndex===null){ el.classList.remove('dimmed'); el.style.transform='translate(0,0)'; }
-    else if(idx===activeIndex){
+    if(activeIndex===null){
+      el.classList.remove('dimmed');
+      el.style.transform='translate(0,0)';
+    } else if(idx===activeIndex){
       el.classList.remove('dimmed');
       const s=slices[idx]; const a=(s.mid-90)*Math.PI/180;
-      el.style.transform=`translate(${Math.cos(a)*24}px, ${Math.sin(a)*24}px)`;
-    } else { el.classList.add('dimmed'); el.style.transform='translate(0,0)'; }
+      el.style.transform=`translate(${Math.cos(a)*24}px, ${Math.sin(a)*24}px)`; // scoot it outward along its own angle, POP
+    } else {
+      el.classList.add('dimmed');
+      el.style.transform='translate(0,0)';
+    }
   });
+
   [...badgeLayer.children].forEach((b,idx)=>b.classList.toggle('active', idx===activeIndex));
   [...chipRow.children].forEach((c,idx)=>c.classList.toggle('active', idx===activeIndex));
 
@@ -350,16 +434,22 @@ function selectSlice(i){
     `;
   }
 }
-window.addEventListener('resize', positionBadges);
-positionBadges(); setTimeout(positionBadges, 50);
 
-/* ---------- slide deck nav ---------- */
+window.addEventListener('resize', positionBadges);
+positionBadges();
+setTimeout(positionBadges, 50); // run it again once fonts/layout actually settle down
+
+/* =========================================================
+   slide nav stuff — dots, arrows, keyboard shortcuts, all
+   riding on TOP of the scroll-snap magic from up above
+   ========================================================= */
 const deck=document.getElementById('deck');
 const slideEls=[...document.querySelectorAll('.slide')];
 const navDots=document.getElementById('navDots');
 const slideCount=document.getElementById('slideCount');
 let current=0;
 
+// one nav dot per slide, spawned fresh
 slideEls.forEach((_,i)=>{
   const dot=document.createElement('button');
   dot.className='nav-dot'; dot.setAttribute('aria-label', `Go to slide ${i+1}`);
@@ -367,6 +457,8 @@ slideEls.forEach((_,i)=>{
   navDots.appendChild(dot);
 });
 
+// keeps the dots + "01 / 03" counter + arrow visibility all in
+// sync with whatever slide we're actually looking at
 function updateNav(i){
   current=i;
   [...navDots.children].forEach((d,idx)=>d.classList.toggle('active', idx===i));
@@ -374,19 +466,24 @@ function updateNav(i){
   document.getElementById('prevBtn').style.visibility = i===0 ? 'hidden' : 'visible';
   document.getElementById('nextBtn').style.visibility = i===slideEls.length-1 ? 'hidden' : 'visible';
 }
+
 function goTo(i){
   i=Math.max(0, Math.min(slideEls.length-1, i));
   slideEls[i].scrollIntoView({behavior:'smooth'});
 }
+
 document.getElementById('prevBtn').addEventListener('click', ()=>goTo(current-1));
 document.getElementById('nextBtn').addEventListener('click', ()=>goTo(current+1));
 
+// watches which slide is ACTUALLY on screen (like if someone just
+// scrolls/swipes manually) and keeps the nav in sync w/ reality
 const io=new IntersectionObserver((entries)=>{
   entries.forEach(e=>{ if(e.isIntersecting && e.intersectionRatio>0.6){ updateNav(slideEls.indexOf(e.target)); } });
 }, {root:deck, threshold:[0.6]});
 slideEls.forEach(s=>io.observe(s));
 updateNav(0);
 
+// arrow keys / page up-down flip slides too, like a real slideshow, fancy
 window.addEventListener('keydown',(e)=>{
   if(e.key==='ArrowDown'||e.key==='PageDown'){ e.preventDefault(); goTo(current+1); }
   if(e.key==='ArrowUp'||e.key==='PageUp'){ e.preventDefault(); goTo(current-1); }
