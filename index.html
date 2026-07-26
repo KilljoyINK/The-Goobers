@@ -4,11 +4,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Goobers</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
   body {
-    background-color: #ffffff;
-    color: #000000;
-    font-family: "Century Schoolbook", "Century Schoolbook L", Georgia, serif;
-    font-style: italic;
+    background-color: #eef1f6;
+    color: #333333;
+    font-family: 'Poppins', sans-serif;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -19,21 +20,107 @@
     padding: 40px;
     box-sizing: border-box;
   }
-  img {
+  .hero-wheel {
     width: 100%;
-    max-width: 800px;
+    max-width: 520px;
     height: auto;
+    margin-bottom: 16px;
+    display: block;
+    overflow: visible;
+  }
+  .hint {
+    font-family: 'Poppins', sans-serif;
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #1b3a5c;
+    text-transform: uppercase;
     margin-bottom: 30px;
   }
   p {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
     max-width: 700px;
-    font-size: 20px;
-    line-height: 1.6;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #444444;
   }
+
+  .segment { cursor: pointer; }
+  .wedge { fill: #1b3a5c; fill-opacity: 0; stroke: #1b3a5c; stroke-width: 2; transition: fill-opacity 0.2s ease, stroke-width 0.2s ease; }
+  .segment:hover .wedge { fill-opacity: 0.06; stroke-width: 3; }
+
+  .name, .in-line, .out-line {
+    font-family: 'Poppins', sans-serif;
+    text-anchor: middle;
+    fill: #1b3a5c;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .name { font-weight: 600; font-size: 19.25px; letter-spacing: 0.4px; text-transform: uppercase; }
+  .in-line  { font-weight: 700; font-size: 16.5px; opacity: 0; }
+  .out-line { font-weight: 400; font-size: 15.84px; fill-opacity: 0.65; opacity: 0; }
+
+  .segment.popped .name { opacity: 0; }
+  .segment.popped .in-line,
+  .segment.popped .out-line { opacity: 1; }
 </style>
 </head>
 <body>
-  <img src="IMAGE.png" alt="The Goobers">
+
+  <svg class="hero-wheel" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- PLAYING TIME -->
+    <g class="segment seg-playing" data-seg="playing">
+      <path class="wedge"
+        d="M50,300 A250,250 0 0,1 300,50 L300,230 A70,70 0 0,0 230,300 Z"/>
+      <text class="name" x="190" y="186">Playing Time</text>
+      <text class="in-line" x="190" y="170">IN: FAIR MINUTES</text>
+      <text class="out-line" x="190" y="206">OUT: TIME HOGS</text>
+    </g>
+
+    <!-- TEAM SPIRIT -->
+    <g class="segment seg-team" data-seg="team">
+      <path class="wedge"
+        d="M300,50 A250,250 0 0,1 550,300 L370,300 A70,70 0 0,0 300,230 Z"/>
+      <text class="name" x="410" y="186">Team Spirit</text>
+      <text class="in-line" x="410" y="170">IN: HAVING FUN</text>
+      <text class="out-line" x="410" y="206">OUT: WIN-AT-ALL-COST</text>
+    </g>
+
+    <!-- COMPETITION -->
+    <g class="segment seg-competition" data-seg="competition">
+      <path class="wedge"
+        d="M550,300 A250,250 0 0,1 300,550 L300,370 A70,70 0 0,0 370,300 Z"/>
+      <text class="name" x="410" y="406">Competition</text>
+      <text class="in-line" x="410" y="390">IN: EXTERNAL</text>
+      <text class="out-line" x="410" y="426">OUT: INTERNAL</text>
+    </g>
+
+    <!-- MISTAKES -->
+    <g class="segment seg-mistakes" data-seg="mistakes">
+      <path class="wedge"
+        d="M300,550 A250,250 0 0,1 50,300 L230,300 A70,70 0 0,0 300,370 Z"/>
+      <text class="name" x="190" y="406">Mistakes</text>
+      <text class="in-line" x="190" y="390">IN: GRACE, PATIENCE</text>
+      <text class="out-line" x="190" y="426">OUT: ICING OUT</text>
+    </g>
+
+    <!-- center hub -->
+    <circle cx="300" cy="300" r="72" fill="none" stroke="#1b3a5c" stroke-width="2"/>
+  </svg>
+  <div class="hint">click a section</div>
+
   <p id="typed-text">The Goobers are a team within the competitive division. This team is externally competitive, not internally competitive. This means that The Goobers are looking to avoid playing with teammates who prevent them from getting in or won't pass them the ball or shame them for making mistakes. This season, we're formalizing The Goobers as a team explicitly committed to fairly distributed playing time, and a non-competitive spirit that prioritizes fun over winning.</p>
+
+<script>
+  document.querySelectorAll('.segment').forEach(seg => {
+    seg.addEventListener('click', () => {
+      const isPopped = seg.classList.contains('popped');
+      document.querySelectorAll('.segment').forEach(s => s.classList.remove('popped'));
+      if (!isPopped) seg.classList.add('popped');
+    });
+  });
+</script>
 </body>
 </html>
