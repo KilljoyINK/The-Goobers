@@ -5,18 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Goobers</title>
 
-<!-- ONE FONT ONLY!! titles, subtitles, body text, buttons — ALL Bricolage Grotesque.
-     no font drama, just different weights doin the work. see .display / .eyebrow below -->
+<!-- Bricolage Grotesque came from Google (at least it wasn't meta)- titles, subtitles, body text, buttons.
+     see .display / .eyebrow below -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@6..144,200..800&display=swap" rel="stylesheet">
 
 <style>
   /* ===== COLOR SQUAD =====
-     --s1 thru --s4 = shades of baby pink, light to THICC dark, one per
+     --s1 thru --s4 = shades of baby pink, light to dark, one per
      chart category (Playing Time, Team Spirit, Competition, Making
-     Mistakes). change a color here?? gotta go update its hex twin down
-     in the JS data too — they are NOT telepathically linked, sadly */
+     Mistakes). change a color here?? gotta go update its hex twinn down
+     in the JS data too — they are NOT linked */
   :root{
     --paper:#FFF6FA;   /* lightest bg (slide 2) */
     --ink:#3A1626;     /* main text */
@@ -32,26 +32,26 @@
     --pad:clamp(20px, 5vw, 64px); /* shared slide padding, stretches w/ the screen */
   }
 
-  /* ---------- the basics, don't overthink it ---------- */
+  /* ---------- the basicsss ---------- */
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
   body{
     font-family:'Bricolage Grotesque', sans-serif;
     color:var(--ink);
-    height:100vh; height:100dvh; /* dvh so mobile browser bars don't eat our stuff */
-    overflow:hidden; /* .deck handles ALL the scrolling, this guy just chills */
+    height:100vh; height:100dvh; /* dvh so mobile browser bars don't MUNCH */
+    overflow:hidden; /* .deck handles scroll */
   }
 
-  /* one font, two vibes — weight/spacing does all the talking here */
+  /* one font, two vibes, shout out to keke palmer calling out one cup two girls lmfao */
   .eyebrow{font-weight:600; letter-spacing:0.02em;} /* tiny shouty-caps text: tags, chips, footer */
   .display{font-weight:800;} /* BIG headline energy */
 
   /* =========================================================
-     ---------- slidesssss boi ----------
-     each .slide = one full-screen vibe. scroll-snap makes
+     ---------- "everybody clap your hands" ---------- 
+     each .slide is full-screen. scroll-snap makes
      scrolling/swiping feel like flipping through an actual
-     slideshow — no JS needed for the basic snap, the script
-     down below just bolts on the dots/arrows/keyboard stuff
+     slideshow — f*** JS. not needed for the basic snap, the script
+     down below works on the dots/arrows/keyboard stuff
      ========================================================= */
   .deck{
     height:100vh; height:100dvh;
@@ -68,10 +68,10 @@
     padding:var(--pad);
     padding-bottom:calc(var(--pad) + 76px); /* leaves room so the footer/nav bar doesn't eat the text */
     position:relative;
-    overflow-y:auto; /* just in case stuff ever doesn't fit — scroll it, don't yeet it off screen */
+    overflow-y:auto; /* just in case something doesn't fit — THIS WILL NEED TO CHANGE, CURRENTLY NOT WORKING */
   }
 
-  /* slideee to the left (1) */
+  /* slideee to the left (SLIDE 1) */
   #slide-1{
     background:var(--s1);
     justify-content:center; align-items:flex-start; text-align:left; gap:22px;
@@ -100,7 +100,7 @@
   .scroll-cue .chev{animation:bob 1.6s ease-in-out infinite;}
   @keyframes bob{0%,100%{transform:translateY(0);} 50%{transform:translateY(6px);}}
 
-  /* now slide to the right (2) */
+  /* now slide to the right (slide 2) */
   #slide-2{background:#FFFBFD; justify-content:flex-start; gap:clamp(18px,3vw,28px);}
   .slide-title{font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent);}
   #slide-2 h2{font-size:clamp(24px,3.6vw,38px); text-transform:uppercase; letter-spacing:-0.01em; max-width:18ch;}
@@ -114,11 +114,11 @@
   .slice:focus-visible{outline:3px solid var(--ink); outline-offset:4px;}
   .slice.dimmed{opacity:0.2;} /* everybody dims except whoever just got picked */
 
-  /* the little words chillin in the donut hole */
+  /* words in the center of the chart 'tap' */
   .center-tag{font-weight:700; fill:var(--ink); text-anchor:middle; dominant-baseline:middle; pointer-events:none; font-size:30px; letter-spacing:0.01em;}
   .center-sub{font-weight:600; fill:var(--muted); text-anchor:middle; pointer-events:none; font-size:15px; letter-spacing:0.06em;}
 
-  /* desktop gets tiny spoke badges floating around the ring (JS points them, see positionBadges) */
+  /* desktop gets badges floating around the ring (JS points them, see positionBadges) */
   .badge-layer{position:absolute; inset:0; pointer-events:none;}
   .badge{
     position:absolute; width:24px; height:24px; border-radius:50%;
@@ -128,7 +128,7 @@
   .badge.active{transform:translate(-50%,-50%) scale(1.35); box-shadow:0 0 0 3px #FFFBFD, 0 0 0 5px var(--ink);}
   .badge:focus-visible{outline:3px solid var(--accent); outline-offset:3px;}
 
-  /* phones get a scrolly chip row instead — badges are too extra for a small screen */
+  /* phones get a scroll chip row instead — badges won't work here */
   .chip-row{display:none; gap:10px; overflow-x:auto; padding:2px 2px 6px; width:100%;}
   .chip{
     flex:0 0 auto; border:1.5px solid var(--muted); border-radius:999px; padding:10px 16px;
@@ -155,7 +155,7 @@
   .panel .caption{font-size:clamp(14px,1.6vw,16px); line-height:1.5; font-style:italic; color:var(--ink);}
   .panel .hint{color:var(--muted); font-style:italic; font-size:14px;}
 
-  /* NOW CRISS CROSS (3) */
+  /* NOW CRISS CROSS ( SLIDE 3) */
   #slide-3{
     background:var(--deep);
     color:var(--paper); justify-content:center; align-items:flex-start; gap:22px;
@@ -201,7 +201,7 @@
   .nav-dot.active::after{background:var(--accent); width:20px; border-radius:5px;}
 
   /* =========================================================
-     responsive?? in THIS economy?? yes bestie
+     responsive?? YES.
      ========================================================= */
 
   /* phones + skinny tablets: badges become a chip row, desktop footer bounces */
@@ -234,7 +234,7 @@
     .master-footer{bottom:8px;}
   }
 
-  /* nobody wants motion sickness, chill mode for whoever asked for it */
+  /* chill mode  */
   @media (prefers-reduced-motion:reduce){
     .slice{transition:none;}
     .scroll-cue .chev{animation:none;}
@@ -246,7 +246,7 @@
 
 <div class="deck" id="deck">
 
-  <!-- slide 1: the cover, obviously -->
+  <!-- slide 1: cover -->
   <section class="slide" id="slide-1">
     <h1 class="masthead display">THE GOOBERS</h1>
     <p class="subtitle">COMPETE OUTWARD.<br>NOT WITH EACH OTHER</p>
@@ -255,7 +255,7 @@
     <div class="scroll-cue"><span>Scroll</span><span class="chev">↓</span></div>
   </section>
 
-  <!-- slide 2: the whole point — one wedge per charter category -->
+  <!-- slide 2: -->
   <section class="slide" id="slide-2">
     <div>
       <div class="slide-title eyebrow">GOOBER SPIRIT</div>
@@ -277,7 +277,7 @@
     <div class="chip-row" id="chipRow"></div>
   </section>
 
-  <!-- slide 3: manifesto, mic drop, done -->
+  <!-- slide 3: manifesto -->
   <section class="slide" id="slide-3">
     <span class="tag eyebrow">GOOBER MANIFESTO</span>
     <h2 class="display">FAIR MINUTES. REAL FUN.<br>ROOM TO MESS UP.</h2>
@@ -289,7 +289,7 @@
 
 </div>
 
-<!-- floats on top of all three slides, forever -->
+<!-- floats on top of all three slides -->
 <div class="master-footer">
   <span>THE GOOBERS</span>
   <span id="slideCount">01 / 03</span>
@@ -325,7 +325,7 @@ function polar(cx,cy,r,angleDeg){
   return {x:cx+r*Math.cos(a), y:cy+r*Math.sin(a)};
 }
 
-// draws one donut wedge between two angles. math magic, don't
+// draws one donut between two angles. math magic, do like my boy bryson and DONT
 // poke it unless you know exactly what you're doing lol
 function donutPath(startA,endA){
   const p1=polar(CX,CY,OUTER,startA), p2=polar(CX,CY,OUTER,endA);
@@ -335,7 +335,6 @@ function donutPath(startA,endA){
 }
 
 // slices up the whole circle evenly between however many categories
-// we've got, plus a lil gap so the wedges don't touch each other
 const usable=360-GAP*data.length, sweep=usable/data.length;
 let cursor=0;
 const slices=data.map((d)=>{
@@ -354,7 +353,7 @@ const stage=document.getElementById('stage');
 let activeIndex=null;
 
 /* ---------- buildin the chart ----------
-   for every category we spawn: one svg wedge, one tiny desktop
+   for every category we spawn: one svg wedge, one desktop
    badge, and one mobile chip — all three wired to the same
    selectSlice(i) so they all agree on what's selected */
 slices.forEach((s,i)=>{
@@ -395,9 +394,9 @@ function positionBadges(){
   });
 }
 
-// click (or hit enter/space) on a wedge = it pops out, everyone
-// else dims down, and the panel + center text spill the tea on
-// that category. click the SAME one again and it all resets
+// click (or hit enter/space) on a wedge = it pops out
+// everything else dims down, and the panel + center text expand with a definition
+// click the SAME one again and it all resets
 function selectSlice(i){
   activeIndex = activeIndex===i ? null : i;
 
@@ -408,7 +407,7 @@ function selectSlice(i){
     } else if(idx===activeIndex){
       el.classList.remove('dimmed');
       const s=slices[idx]; const a=(s.mid-90)*Math.PI/180;
-      el.style.transform=`translate(${Math.cos(a)*24}px, ${Math.sin(a)*24}px)`; // scoot it outward along its own angle, POP
+      el.style.transform=`translate(${Math.cos(a)*24}px, ${Math.sin(a)*24}px)`; // scoot it outward along its own angle, because self assure.
     } else {
       el.classList.add('dimmed');
       el.style.transform='translate(0,0)';
@@ -449,7 +448,7 @@ const navDots=document.getElementById('navDots');
 const slideCount=document.getElementById('slideCount');
 let current=0;
 
-// one nav dot per slide, spawned fresh
+// one nav dot per slide
 slideEls.forEach((_,i)=>{
   const dot=document.createElement('button');
   dot.className='nav-dot'; dot.setAttribute('aria-label', `Go to slide ${i+1}`);
@@ -483,7 +482,7 @@ const io=new IntersectionObserver((entries)=>{
 slideEls.forEach(s=>io.observe(s));
 updateNav(0);
 
-// arrow keys / page up-down flip slides too, like a real slideshow, fancy
+// arrow keys / page up-down flip slides too, like a REALL slideshow. 
 window.addEventListener('keydown',(e)=>{
   if(e.key==='ArrowDown'||e.key==='PageDown'){ e.preventDefault(); goTo(current+1); }
   if(e.key==='ArrowUp'||e.key==='PageUp'){ e.preventDefault(); goTo(current-1); }
