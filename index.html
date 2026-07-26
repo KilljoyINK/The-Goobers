@@ -51,8 +51,9 @@
   /* slideee to the left (1) */
   #slide-1{
     background:var(--s1);
-    justify-content:center; align-items:center; text-align:center; gap:22px;
+    justify-content:center; align-items:flex-start; text-align:left; gap:22px;
   }
+  #slide-1 .sub{color:var(--muted); margin:0;}
   .masthead{
     font-size:clamp(56px, 15vw, 160px);
     line-height:0.95; letter-spacing:-0.02em; text-transform:uppercase;
@@ -204,9 +205,9 @@
 <div class="deck" id="deck">
 
   <section class="slide" id="slide-1">
-    <span class="tag mono">COMPETITIVE DIV.</span>
     <h1 class="masthead display">THE GOOBERS</h1>
-    <p class="subtitle">COMPETE OUTWARD. NOT WITH EACH OTHER</p>
+    <p class="subtitle">COMPETE OUTWARD.<br>NOT WITH EACH OTHER</p>
+    <span class="tag mono">COMPETITIVE DIV.</span>
     <p class="sub">This season we're formalizing The Goobers as a team explicitly committed to fairly distributed playing time, and a non-competitive spirit that prioritizes fun over winning. Scroll to see more of what's in and what's out.</p>
     <div class="scroll-cue"><span>Scroll</span><span class="chev">↓</span></div>
   </section>
