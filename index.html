@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>The Goobers — Season Charter</title>
+<title>The Goobers</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@6..144,200..800&display=swap" rel="stylesheet">
@@ -29,7 +29,7 @@
   .mono{font-family:'Bricolage Grotesque', sans-serif; letter-spacing:0.02em;}
   .display{font-family:'Bricolage Grotesque', sans-serif; font-weight:800;}
 
-  /* ---------- deck / slides ---------- */
+  /* ---------- slidesssss boi ---------- */
   .deck{
     height:100vh; height:100dvh;
     overflow-y:scroll;
@@ -48,7 +48,7 @@
     overflow-y:auto;
   }
 
-  /* slide 1 — cover */
+  /* slideee to the left (1) */
   #slide-1{
     background:var(--s1);
     justify-content:center; align-items:center; text-align:center; gap:22px;
@@ -76,7 +76,7 @@
   .scroll-cue .chev{animation:bob 1.6s ease-in-out infinite;}
   @keyframes bob{0%,100%{transform:translateY(0);} 50%{transform:translateY(6px);}}
 
-  /* slide 2 — chart */
+  /* now slide to the right (2) */
   #slide-2{background:#FFFBFD; justify-content:flex-start; gap:clamp(18px,3vw,28px);}
   .slide-title{font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent);}
   #slide-2 h2{font-size:clamp(24px,3.6vw,38px); text-transform:uppercase; letter-spacing:-0.01em; max-width:18ch;}
@@ -124,7 +124,7 @@
   .panel .caption{font-size:clamp(14px,1.6vw,16px); line-height:1.5; font-style:italic; color:var(--ink);}
   .panel .hint{color:var(--muted); font-style:italic; font-size:14px;}
 
-  /* slide 3 — close */
+  /* NOW CRISS CROSS (3) */
   #slide-3{
     background:var(--deep);
     color:var(--paper); justify-content:center; align-items:flex-start; gap:22px;
@@ -138,7 +138,7 @@
   }
   #slide-3 .sub{color:#F7D8E6; max-width:48ch;}
 
-  /* ---------- persistent chrome ---------- */
+  /* ---------- WE ALOMOST DONE ---------- */
   .master-footer{
     position:fixed; left:0; right:0; bottom:14px; z-index:20;
     display:flex; justify-content:space-between; align-items:center;
@@ -178,7 +178,7 @@
   @media (min-width:1024px){
     .donut-stage{width:min(420px, 58vh, 34vw); height:min(420px, 58vh, 34vw);}
   }
-  /* short / landscape viewports (phones on their side, small laptops) */
+  /* LANDSCAPER VIBES */
   @media (max-height:520px){
     .slide{padding-top:calc(var(--pad) * 0.6); padding-bottom:calc(var(--pad) * 0.6 + 58px);}
     .masthead{font-size:clamp(28px, 9vw, 60px);}
@@ -213,8 +213,8 @@
 
   <section class="slide" id="slide-2">
     <div>
-      <div class="slide-title mono">THE CHARTER</div>
-      <h2 class="display">FOUR HOUSE RULES.</h2>
+      <div class="slide-title mono">THE GOOBER SPIRIT</div>
+      <h2 class="display">FOUR HOUSE PRINCIPLES</h2>
     </div>
     <div class="chart-wrap">
       <div class="donut-stage" id="stage">
@@ -233,11 +233,11 @@
   </section>
 
   <section class="slide" id="slide-3">
-    <span class="tag mono">SEASON CHARTER</span>
+    <span class="tag mono">GOOBER MANIFESTO</span>
     <h2 class="display">FAIR MINUTES. REAL FUN.<br>ROOM TO MESS UP.</h2>
-    <p class="sub">That's the whole deal. Four rules, one team, zero icing out.</p>
+    <p class="sub">That's the whole deal. Four guiding principles, one team, zero icing out.</p>
     <div class="recap mono">
-      <span>Playing Time</span><span>Team Spirit</span><span>Competition</span><span>Mistakes</span>
+      <span>Playing Time</span><span>Team Spirit</span><span>Competition</span><span>Making Mistakes</span>
     </div>
   </section>
 
@@ -255,12 +255,12 @@
 </nav>
 
 <script>
-/* ---------- chart data ---------- */
+/* ---------- DATA IN DA CHART ---------- */
 const data = [
   { label:"PLAYING TIME", short:"TIME", hex:"#FCE1EC", in:"Fair minutes", out:"Time hogs", caption:"Everyone gets a fair share of the clock — nobody's stuck holding the bench." },
   { label:"TEAM SPIRIT", short:"SPIRIT", hex:"#F7B9D4", in:"Having fun", out:"Win-at-all-cost", caption:"We're here to enjoy the game, not chase a scoreboard at any cost." },
   { label:"COMPETITION", short:"COMPETE", hex:"#EF8FB9", in:"External", out:"Internal", caption:"The rivalry stays with the other team — never with each other." },
-  { label:"MISTAKES", short:"SLIPS", hex:"#D6588F", in:"Grace, patience", out:"Icing out", caption:"Mess up, get grace. Nobody sits in the cold for missing a pass." }
+  { label:"MAKING MISTAKES", short:"SLIPS", hex:"#D6588F", in:"Grace, patience", out:"Icing out", caption:"Mess up, get grace. Nobody sits in the cold for missing a pass." }
 ];
 
 const CX=240, CY=240, OUTER=200, INNER=124, GAP=4;
